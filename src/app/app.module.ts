@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { CourseListComponent } from './courses/course-list.component'
 import { FormsModule } from '@angular/forms';
 
+// Is required declare all components for using in other templates
 @NgModule({
   declarations: [
     AppComponent,
