@@ -1,9 +1,9 @@
+import { CourseInfoComponent } from './course-info.component';
 import { Component, OnInit } from "@angular/core";
 import { Course } from "./course";
 import { CourseService } from "./course.service";
 
 @Component({
-  selector: 'app-course-list',
   templateUrl: './course-list.component.html'
 })
 export class CourseListComponent implements OnInit {
@@ -17,8 +17,18 @@ export class CourseListComponent implements OnInit {
   constructor(private courseService: CourseService) { }
 
   ngOnInit(): void {
-    this._courses = this.courseService.retriveAll();
-    this.filteredCourses = this._courses;
+    this.retrieveAll();
+  }
+  retrieveAll(): void {
+    this.courseService.retrieveAll().subscribe({
+      next: (courses: any) => {
+        this._courses = courses;
+        this.filteredCourses = this._courses;
+      },
+      error: (error: Error) => {
+        console.log('Erro:', error);
+      }
+    });
   }
 
   set filter(value: string) {

@@ -1,4 +1,7 @@
+import { HttpClient } from "@angular/common/http";
+import { core } from "@angular/compiler";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { Course } from "./course";
 
 // inform to angular that class is enable for dependency injection
@@ -6,8 +9,23 @@ import { Course } from "./course";
   providedIn: 'root'
 })
 export class CourseService {
-  retriveAll(): Course[] {
-    return COURSES;
+
+  private basePath: string = 'http://localhost:3100/api/courses';
+  constructor(private httpClient: HttpClient) { }
+
+  retrieveAll(): Observable<Course[]> {
+    return this.httpClient.get<Course[]>(this.basePath);
+  }
+
+  retrieveById(id: number): Course {
+    return COURSES.find((courseIterator: Course) => courseIterator.id === id) as Course;
+  }
+
+  save(course: Course): void {
+    if (course.id) {
+      const index = COURSES.findIndex((courseIterator: Course) => courseIterator.id === course.id);
+      COURSES[index] = course;
+    }
   }
 }
 
